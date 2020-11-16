@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:40 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/16 20:26:16 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/16 20:43:05 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ void	philo_eat(t_philo *ph)
 		print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
 	ph->time_last_meal = get_time_ms(); //updating time when philosopher starts to eat
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, EAT); //eating when he has 2 forks
-	sleep_better(ph->info->t_to_eat); //converting ms in microsec
+	usleep(ph->info->t_to_eat * 1000); //converting ms in microsec
 	pthread_mutex_unlock(&((ph->mutex)[left_f]));
 	pthread_mutex_unlock(&((ph->mutex)[right_f]));
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, SLEEP); //sleeping after eating
-	sleep_better(ph->info->t_to_sleep);
+	usleep(ph->info->t_to_sleep * 1000);
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, THINK); //thinking after eating
 }
 
