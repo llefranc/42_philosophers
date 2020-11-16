@@ -6,111 +6,132 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:40 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/16 12:07:36 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/16 20:26:16 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
 /*
-** Attributes to each thread an unique philosopher number (between 0 and
-** nb_philo -1) in order to navigates in the threads / mutexs array previously
-** created.
+** For philospher number x, locks mutex x and mutex x-1. When the 2 mutexs are
+** lock, the philosopher starts to eat for time_to_eat ms. Then unlocks the 2
+** mutexs. Odds philosophers id will start with rigth fork, even will start
+** with left in order so the algo will not be block if all the philosophers
+** take one fork exactly at the same time.
 */
-int		attributes_id_philo(t_philo *ph)
+void	philo_eat(t_philo *ph)
 {
-	int		id_philo;
-	
-	pthread_mutex_lock(&(ph->mutex_num_philo));
-	id_philo = (ph->nb_philo)--;
-	pthread_mutex_unlock(&(ph->mutex_num_philo));
-	return (id_philo);
+	int		right_f;
+	int		left_f;
+
+	right_f = ph->id - 1;
+	left_f = right_f != 0 ? right_f - 1 : ph->info->nb_ph - 1; //if philo num 0, will take fork 0 and fork n (for n philosphers)
+	if ((ph->id % 2 == 0 && !pthread_mutex_lock(&((ph->mutex)[left_f]))) //even id starts with left, odd id with right
+			|| !pthread_mutex_lock(&((ph->mutex)[right_f])))
+		print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
+	if ((ph->id % 2 == 0 && !pthread_mutex_lock(&((ph->mutex)[right_f])))
+			|| !pthread_mutex_lock(&((ph->mutex)[left_f])))
+		print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
+	ph->time_last_meal = get_time_ms(); //updating time when philosopher starts to eat
+	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, EAT); //eating when he has 2 forks
+	sleep_better(ph->info->t_to_eat); //converting ms in microsec
+	pthread_mutex_unlock(&((ph->mutex)[left_f]));
+	pthread_mutex_unlock(&((ph->mutex)[right_f]));
+	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, SLEEP); //sleeping after eating
+	sleep_better(ph->info->t_to_sleep);
+	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, THINK); //thinking after eating
 }
 
 /*
-** For philospher number x, locks mutex x and mutex x-1. When the 2 mutexs are
-** lock, the philosopher starts to eat for time_to_eat ms. Then unlocks the 2
-** mutexs.
+** Checks the time since last lunch, and if it's more than time_to_die prints
+** the death message and sets ph_die boolean to 1 (it will prevent other
+** messages from other threads to be print on screen), then exits.
 */
-void	philo_eat(int id_philo, t_philo *ph)
+void	*check_philo_alive(void *tmp)
 {
-	int		id_fork;
+	t_philo		*ph;
+	long		time_death;
 
-	id_fork = id_philo != 0 ? id_philo - 1 : ph->nb_threads - 1; //if philo num 0, will take fork 0 and fork n (for n philosphers)
-	if (!pthread_mutex_lock(&((ph->mutex)[id_philo])))
-		print_state_msg(ph, id_philo, get_time_ms() - ph->time_start, FORK);
-	if (!pthread_mutex_lock(&((ph->mutex)[id_fork])))
-		print_state_msg(ph, id_philo, get_time_ms() - ph->time_start, FORK);
-	print_state_msg(ph, id_philo, get_time_ms() - ph->time_start, EAT); //eating when he has 2 forks
-	usleep(ph->t_to_eat * 1000);
-	pthread_mutex_unlock(&((ph->mutex)[id_philo]));
-		// printf("%d : unlock id_philo %d\n", id_philo, id_philo);
-	pthread_mutex_unlock(&((ph->mutex)[id_fork]));
-		// printf("%d : unlock id_fork %d\n", id_philo, id_fork);
-	print_state_msg(ph, id_philo, get_time_ms() - ph->time_start, SLEEP); //sleeping after eating
-	usleep(ph->t_to_sleep * 1000);
-	print_state_msg(ph, id_philo, get_time_ms() - ph->time_start, THINK); //thinking after eating
-}
-
-// void	*check_philo_alive(void *tmp)
-// {
-// 	t_philo		*ph;
-
-// 	ph = (t_philo *)tmp;
-// 	while (1)
-// 	{
-// 		if (get_time_ms()
-// 	}
-// }
-
-void	*philo_life(void *ph)
-{
-	int		id_philo;
-
-	id_philo = attributes_id_philo((t_philo *)ph); //index for threads / mutexs array
+	ph = (t_philo *)tmp;
 	while (1)
 	{
-		philo_eat(id_philo, (t_philo *)ph);
+		time_death = get_time_ms();
+		if ((time_death - ph->time_last_meal) > ph->info->t_to_die)
+		{
+			pthread_mutex_lock(&(ph->ph_die->mutex)); //only one thread prints at a time
+			if (!ph->ph_die->data) //doesn't print msg if another philo is already dead
+				print_ms_and_state(ph->id, time_death - ph->time_start, " has died\n");
+			ph->ph_die->data = 1; //sets death boolean to 1, no other messages from other philo will be print
+			pthread_mutex_unlock(&(ph->ph_die->mutex));
+			return (NULL);
+		}
+	}
+}
+
+/*
+** Creates a thread for controlling time_to_die, and then executes
+** eat -> sleep > think in a loop until a philosophe die, then exits.
+*/
+void	*philo_life(void *ph)
+{
+	pthread_t	control_die;
+
+	((t_philo *)ph)->time_last_meal = get_time_ms();
+	pthread_create(&control_die, NULL, &check_philo_alive, ph); //thread to control time_to_die
+	while (1)
+	{
+		philo_eat((t_philo *)ph);
+		if (((t_philo *)ph)->ph_die->data) //if a philo is dead, the thread exits
+			return (ph);
 	}
 	return (ph);
 }
 
+/*
+** Joins each threads created.
+*/
 void	join_all_threads(t_philo *ph)
 {
 	int		i = -1;
 
-	while (++i < ph->nb_threads)
-		pthread_join((ph->thread)[i], NULL);
+	while (ph[++i].id)
+		pthread_join(ph[i].thread, NULL);
 }
 
-// manger > dormir > penser
-//time_to_die : en millisecondes. Si un philosophe ne commence pas a manger
-// dans ’time_to_die’ millisecondes après avoir commencer son dernier repas ou
-// le début de la simulation, il meurt.
+/*
+** Destroys all the mutexs and frees all the memory allocated.
+*/
+void	clean_exit(t_philo *ph)
+{
+	int		i;
 
-// Philosophe 1 est à coté de philosophe ’number_of_philosopher’. Tous les autres
-// philosophes sont N sont à coté de leur N + 1 et N - 1.
-
-// Le statut affiché ne doit pas être mélangé avec le statut d’un autre philosophe.
-// • Vous ne pouvez pas avoir plus de 10ms de retard entre la mort d’un philosophe et
-// l’affichage de sa mort.
-
-//penser a checker les retours d'erreurs
-//ameliorer le print (moins de write)
+	i = -1;
+	while (ph[++i].id)
+		pthread_mutex_destroy(&((ph[i].mutex)[i]));
+	pthread_mutex_destroy(&(ph->ph_die->mutex));
+	free(ph->mutex);
+	free(ph);
+}
 
 int		main(int ac, char **av)
 {
-	t_philo		ph;
+	t_philo			*ph;
+	t_pdata			ph_die;
+	pthread_mutex_t	*mutex;
+	t_info			info;
 	
 	if (check_arguments(ac, av))
 		return (FAILURE);
-	init_philo_struct(&ph, ac, av); //atoi the 4 or 5 arguments into the struct
-
-	ph.mutex = create_forks(ph.nb_threads, &ph); //creates x mutexs for x philosophers
-	ph.thread = create_philos(ph.nb_threads, &ph); //creates x threads for x philosophers
-
-	join_all_threads(&ph); //waiting all threads to finish
-	free(ph.thread);
-	free(ph.mutex);
+	pthread_mutex_init(&(ph_die.mutex), NULL);
+	ph_die.data = 0;
+	init_t_info(&info, ac, av);
+	if (info.nb_ph < 2)
+		return (error_msg("Not enough philosphers, must be at least 2\n"));
+	mutex = create_forks(info.nb_ph); //creates x mutexs for x philosophers
+	if (!(ph = create_t_philo_array(mutex, &ph_die, &info)))
+		return (error_msg("Malloc failed\n"));
+	launch_threads(info.nb_ph, ph);
+	join_all_threads(ph); //waiting all threads
+	clean_exit(ph);
 	return (0);
 }

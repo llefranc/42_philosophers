@@ -6,12 +6,15 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 13:01:47 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/15 13:02:08 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/16 20:25:20 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
+/*
+** Writes string *s on a specific fd.
+*/
 void	ft_putstr_fd(char *s, int fd)
 {
 	if (!s)
@@ -19,6 +22,9 @@ void	ft_putstr_fd(char *s, int fd)
 	write(fd, s, ft_strlen(s));
 }
 
+/*
+** Returns the len of string *s.
+*/
 size_t	ft_strlen(const char *s)
 {
 	size_t i;
@@ -29,6 +35,9 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
+/*
+** Returns 1 if c is a digit, 0 otherwise.
+*/
 int		ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
@@ -53,6 +62,9 @@ int		ft_strisdigit(char *str)
 	return (SUCCESS);
 }
 
+/*
+** Transforms string *str into an int. Returns 0 is *str is not a number.
+*/
 long		ft_atoi(const char *str)
 {
 	long	nb;
@@ -116,4 +128,89 @@ char	*ft_itoa(long n)
 	}
 	str[len] = temp + 48;
 	return (str);
+}
+
+/*
+** More opti than usleep function.
+*/
+void	sleep_better(long nb_ms)
+{
+	long		time;
+
+	time = get_time_ms();
+	while (get_time_ms() - time < nb_ms)
+		continue ;
+}
+
+int		lennb_for_str(unsigned int nb)
+{
+	int len;
+
+	len = 1;
+	while (nb > 9)
+	{
+		len++;
+		nb /= 10;
+	}
+	return (len);
+}
+
+int		lennb(unsigned int nb)
+{
+	int len;
+
+	len = 1;
+	while (nb > 9)
+	{
+		len *= 10;
+		nb /= 10;
+	}
+	return (len);
+}
+
+void	ft_putnbr_buffer(int n, char *str)
+{
+	unsigned int	temp;
+	unsigned int	len;
+	char			carac;
+
+	carac = '-';
+	temp = n;
+	if (n < 0)
+	{
+		*str = carac;
+		str++;
+		temp = -n;
+	}
+	len = lennb(temp);
+	while (len >= 10)
+	{
+		*str = temp / len + 48;
+		str++;
+		temp %= len;
+		len /= 10;
+	}
+	*str = temp + 48;
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t i;
+	size_t len;
+
+	i = 0;
+	len = 0;
+	if (src == NULL)
+		return (0);
+	while (src[len])
+		len++;
+	if (dstsize == 0)
+		return (len);
+	while (i < (dstsize - 1) && src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (len);
 }

@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:54 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/16 12:01:33 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/16 20:25:34 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,42 +28,60 @@
 # define SLEEP 3
 # define DIE 4
 
-typedef struct		s_philo
+typedef struct 		s_pdata
 {
-	int				nb_threads;
-	int				nb_philo;
+	pthread_mutex_t	mutex;
+	int				data;
+}					t_pdata;
+
+typedef struct		s_info
+{
+	int				nb_ph;
 	int				t_to_die;
 	int				t_to_eat;
 	int				t_to_sleep;
-	int				nb_each_philo_eat;
-	pthread_t		*thread;
+	int				nb_each_ph_eat;
+}					t_info;
+
+typedef struct		s_philo
+{
+	int				id;
+	t_info			*info;
+	pthread_t		thread;
 	pthread_mutex_t	*mutex;
-	pthread_mutex_t	mutex_num_philo;
 	long			time_start;
-	int				philo_die;		//boolean sets to 1 when a philo die
-}					t_philo;
+	long			time_last_meal;
+	t_pdata			*ph_die;		//boolean sets to 1 when a philo die, and mutex for printing
+}					t_philo;        //correctly between all the threads
 
 //utils.c
 
-int		check_arguments(int ac, char **av);
-int		print_state_msg(t_philo *ph, int id_philo, suseconds_t ms, int type);
-long	get_time_ms(void);
+int				error_msg(char *str);
+int				check_arguments(int ac, char **av);
+int				print_ms_and_state(int id, int ms, char *str_msg);
+int				print_state_msg(t_philo *ph, int id_philo, suseconds_t ms, int type);
+long			get_time_ms(void);
 
 //libft.c
 
-size_t	ft_strlen(const char *s);
-void	ft_putstr_fd(char *s, int fd);
-int		ft_strisdigit(char *str);
-long	ft_atoi(const char *str);
-char	*ft_itoa(long n);
-
+size_t			ft_strlen(const char *s);
+void			ft_putstr_fd(char *s, int fd);
+int				ft_strisdigit(char *str);
+long			ft_atoi(const char *str);
+char			*ft_itoa(long n);
+void			sleep_better(long nb_ms);
+int				lennb(unsigned int nb);
+int				lennb_for_str(unsigned int nb);
+void			ft_putnbr_buffer(int n, char *str);
+size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 //init.c
 
-pthread_t	*create_philos(int	nb_philos, t_philo *ph);
-pthread_mutex_t	*create_forks(int nb_forks, t_philo *ph);
-void	init_philo_struct(t_philo *ph, int ac, char **av);
+void			init_t_info(t_info *info, int ac, char **av);
+t_philo			*create_t_philo_array(pthread_mutex_t *mutex, t_pdata *ph_die, t_info *info);
+pthread_mutex_t	*create_forks(int nb_forks);
+void			launch_threads(int	nb_ph, t_philo *ph);
 
-void	*philo_life(void *ph);
+void			*philo_life(void *ph);
 
 #endif
