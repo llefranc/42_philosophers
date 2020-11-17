@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 11:28:59 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 20:05:41 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 20:59:09 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	launch_processes(t_philo *ph)
 	sem_wait(ph->ph_die);
 	while (--i >= 0)
 		kill(pid[i], SIGINT);
+	free(pid);
 }
 
 /*
