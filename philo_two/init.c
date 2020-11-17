@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 11:28:59 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 13:21:34 by user42           ###   ########.fr       */
+/*   Updated: 2020/11/17 16:08:30 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ int		init_semaphore(t_philo *ph, t_info *info)
 
 	nb_ph = info->nb_ph;
 	printing = NULL;
-	sem_unlink(S_FORK);
+	sem_unlink(S_FORKS);
 	sem_unlink(S_PRINT);
 	sem_unlink(S_TAKE);
-	nb_forks = sem_open(S_FORK, O_CREAT, 0644, nb_ph / 2); //divided by 2 because algo works with pairs of forks
+	nb_forks = sem_open(S_FORKS, O_CREAT, 0644, nb_ph / 2); //divided by 2 because algo works with pairs of forks
 	printing = sem_open(S_PRINT, O_CREAT, 0644, 1);
 	take_forks = sem_open(S_TAKE, O_CREAT, 0644, 1);
 	while (--nb_ph >= 0)
@@ -83,7 +83,6 @@ t_philo	*create_t_philo_array(t_info *info, int *ph_die)
 	while (nb_ph - 1 >= 0)
 	{
 		ph[nb_ph - 1].id = nb_ph;
-		ph[nb_ph - 1].ph_die = 0; //sets to 1 when a philo die
 		ph[nb_ph - 1].info = info;
 		ph[nb_ph - 1].time_start = time_start; //all structs have the same time_start
 		ph[nb_ph - 1].ph_die = ph_die;

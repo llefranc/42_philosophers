@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.h                                        :+:      :+:    :+:   */
+/*   philo_three.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:54 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 15:59:41 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 13:19:52 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_TWO_H
-# define PHILO_TWO_H
+#ifndef PHILO_THREE_H
+# define PHILO_THREE_H
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -21,6 +21,7 @@
 # include <semaphore.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <signal.h>
 
 # define SUCCESS 0
 # define FAILURE 1
@@ -31,10 +32,10 @@
 # define SLEEP 3
 # define DIE 4
 
-# define S_FORKS "semaphore_forks"
-# define S_TAKE "semaphore_take_forks"
-# define S_PRINT "semaphore_print"
-
+# define S_FORKS "sem_forks"
+# define S_TAKE "sem_take_forks"
+# define S_PRINT "sem_print"
+# define S_PHILO_DIE "sem_philo_die"
 typedef struct		s_info
 {
 	int				nb_ph;
@@ -54,7 +55,7 @@ typedef struct		s_philo
 	long			time_last_meal;
 	sem_t			*printing;      //one thread at a time can print
 	sem_t			*take_forks;    //one philo at a time can take 2 forks
-	int				*ph_die;         //boolean to exit the threads when a philosophe die
+	sem_t			*ph_die;        //main will block until a philo die
 }					t_philo;
 
 //utils.c
@@ -81,14 +82,14 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 //init.c
 
 void			init_t_info(t_info *info, int ac, char **av);
-t_philo			*create_t_philo_array(t_info *info, int *ph_die);
+int				create_t_philo_array(t_philo *ph, t_info *info);
 pthread_mutex_t	*create_forks(int nb_forks);
-void			launch_threads(t_philo *ph);
+void			launch_processes(t_philo *ph);
 
 //threads.c
 
-void			*philo_life(void *ph);
+int				philo_life(t_philo *ph);
 void			join_all_threads(t_philo *ph);
-void			clean_exit(t_philo *ph);
+void			clean_exit(t_philo ph);
 
 #endif
