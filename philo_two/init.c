@@ -6,11 +6,11 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 11:28:59 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 12:53:18 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 12:52:58 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 /*
 ** Creates an array of threads.
@@ -22,22 +22,6 @@ void	launch_threads(int	nb_ph, t_philo *ph)
 	i = -1;
 	while (++i < nb_ph)
 		pthread_create(&(ph[i].thread), NULL, &philo_life, &(ph[i]));
-}
-
-/*
-** Creates an array of mutexs (nb mutexs = nb philosophers).
-*/
-pthread_mutex_t	*create_forks(int nb_forks)
-{
-	pthread_mutex_t	*mutex;
-	int				i;
-
-	i = 0;
-	if (!(mutex = malloc(sizeof(*mutex) * (nb_forks))))
-		return (NULL);
-	while (i < nb_forks)
-		pthread_mutex_init(&mutex[i++], NULL);
-	return (mutex);
 }
 
 /*
@@ -54,10 +38,37 @@ void	init_t_info(t_info *info, int ac, char **av)
 }
 
 /*
+** Opens all the semaphore.
+*/
+int		init_semaphore(t_philo *ph, t_info *info)
+{
+	int		nb_ph;
+	sem_t	*nb_forks;
+	sem_t	*printing;
+	sem_t	*take_forks;
+
+	nb_ph = info->nb_ph;
+	printing = NULL;
+	sem_unlink(S_FORK);
+	sem_unlink(S_PRINT);
+	sem_unlink(S_TAKE);
+	nb_forks = sem_open(S_FORK, O_CREAT, 0644, nb_ph / 2); //divided by 2 because algo works with pairs of forks
+	printing = sem_open(S_PRINT, O_CREAT, 0644, 1);
+	take_forks = sem_open(S_TAKE, O_CREAT, 0644, 1);
+	while (--nb_ph >= 0)
+	{
+		(ph[nb_ph]).nb_forks = nb_forks; //nb of pair of forks available
+		(ph[nb_ph]).printing = printing; //one thread at a time can print
+		(ph[nb_ph]).take_forks = take_forks; //one philo at a time can take 2 forks
+	}
+	return (SUCCESS);
+}
+
+/*
 ** Creates, initiates and returns an array of struct t_philo. Returns NULL if
 ** an error occured.
 */
-t_philo	*create_t_philo_array(pthread_mutex_t *mutex, t_pdata *ph_die, t_info *info)
+t_philo	*create_t_philo_array(t_info *info, int *ph_die)
 {
 	t_philo	*ph;
 	int		nb_ph;
@@ -67,14 +78,15 @@ t_philo	*create_t_philo_array(pthread_mutex_t *mutex, t_pdata *ph_die, t_info *i
 	if (!(ph = malloc(sizeof(*ph) * (nb_ph + 1)))) //+1 for NULL-terminated
 		return (NULL);
 	ph[nb_ph].id = 0; //end the array
+	init_semaphore(ph, info);
 	time_start = get_time_ms(); //ref time for time calculs
 	while (nb_ph - 1 >= 0)
 	{
 		ph[nb_ph - 1].id = nb_ph;
-		ph[nb_ph - 1].mutex = mutex;
-		ph[nb_ph - 1].ph_die = ph_die;
+		ph[nb_ph - 1].ph_die = 0; //sets to 1 when a philo die
 		ph[nb_ph - 1].info = info;
 		ph[nb_ph - 1].time_start = time_start; //all structs have the same time_start
+		ph[nb_ph - 1].ph_die = ph_die;
 		nb_ph--;
 	}
 	return (ph);

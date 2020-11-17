@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:54 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 11:09:24 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 12:46:33 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <semaphore.h>
+# include <errno.h>
 
 # define SUCCESS 0
 # define FAILURE 1
@@ -28,11 +30,9 @@
 # define SLEEP 3
 # define DIE 4
 
-typedef struct 		s_pdata
-{
-	pthread_mutex_t	mutex;
-	int				data;
-}					t_pdata;
+# define S_FORK "semaphore_fork"
+# define S_TAKE "semaphore_take_forks"
+# define S_PRINT "semaphore_print"
 
 typedef struct		s_info
 {
@@ -48,11 +48,13 @@ typedef struct		s_philo
 	int				id;
 	t_info			*info;
 	pthread_t		thread;
-	pthread_mutex_t	*mutex;
+	sem_t			*nb_forks;
 	long			time_start;
 	long			time_last_meal;
-	t_pdata			*ph_die;		//boolean sets to 1 when a philo die, and mutex for printing
-}					t_philo;        //correctly between all the threads
+	sem_t			*printing;      //one thread at a time can print
+	sem_t			*take_forks;    //one philo at a time can take 2 forks
+	int				*ph_die;         //boolean to exit the threads when a philosophe die
+}					t_philo;
 
 //utils.c
 
@@ -78,7 +80,7 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 //init.c
 
 void			init_t_info(t_info *info, int ac, char **av);
-t_philo			*create_t_philo_array(pthread_mutex_t *mutex, t_pdata *ph_die, t_info *info);
+t_philo			*create_t_philo_array(t_info *info, int *ph_die);
 pthread_mutex_t	*create_forks(int nb_forks);
 void			launch_threads(int	nb_ph, t_philo *ph);
 
