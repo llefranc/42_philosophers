@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 11:28:59 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 12:53:18 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 13:18:28 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 /*
 ** Creates an array of threads.
 */
-void	launch_threads(int	nb_ph, t_philo *ph)
+void	launch_threads(t_philo *ph)
 {
 	int				i;
 
 	i = -1;
-	while (++i < nb_ph)
+	while (ph[++i].id)
 		pthread_create(&(ph[i].thread), NULL, &philo_life, &(ph[i]));
 }
 

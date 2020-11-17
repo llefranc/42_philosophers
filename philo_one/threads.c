@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 11:04:24 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 11:40:53 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 13:25:38 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ void	*philo_life(void *ph)
 	{
 		philo_eat((t_philo *)ph);
 		if (((t_philo *)ph)->ph_die->data) //if a philo is dead, the thread exits
+		{
+			pthread_join(control_die, NULL);
 			return (ph);
+		}
 	}
 	return (ph);
 }

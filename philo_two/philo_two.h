@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:54 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 12:46:33 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 13:19:52 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/time.h>
 # include <semaphore.h>
 # include <errno.h>
+# include <fcntl.h>
 
 # define SUCCESS 0
 # define FAILURE 1
@@ -82,7 +83,7 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void			init_t_info(t_info *info, int ac, char **av);
 t_philo			*create_t_philo_array(t_info *info, int *ph_die);
 pthread_mutex_t	*create_forks(int nb_forks);
-void			launch_threads(int	nb_ph, t_philo *ph);
+void			launch_threads(t_philo *ph);
 
 //threads.c
 

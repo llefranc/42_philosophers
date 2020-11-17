@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:40 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 11:04:51 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 13:18:50 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		main(int ac, char **av)
 	mutex = create_forks(info.nb_ph); //creates x mutexs for x philosophers
 	if (!(ph = create_t_philo_array(mutex, &ph_die, &info)))
 		return (error_msg("Malloc failed\n"));
-	launch_threads(info.nb_ph, ph);
+	launch_threads(ph);
 	join_all_threads(ph); //waiting all threads
 	clean_exit(ph);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 11:04:24 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 12:55:18 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 14:50:31 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	*check_philo_alive(void *tmp)
 			sem_post(ph->printing);
 			return (NULL);
 		}
+		if (*(ph->ph_die)) //if a philo is dead, the thread exits
+			return (NULL);
 	}
 }
 
@@ -69,8 +71,11 @@ void	*philo_life(void *ph)
 	while (1)
 	{
 		philo_eat((t_philo *)ph);
-		if (((t_philo *)ph)->ph_die) //if a philo is dead, the thread exits
+		if (*(((t_philo *)ph)->ph_die)) //if a philo is dead, the thread exits
+		{
+			pthread_join(control_die, NULL);
 			return (ph);
+		}
 	}
 	return (ph);
 }
@@ -91,9 +96,6 @@ void	join_all_threads(t_philo *ph)
 */
 void	clean_exit(t_philo *ph)
 {
-	int		i;
-
-	i = -1;
 	sem_close(ph->nb_forks);
 	sem_close(ph->printing);
 	sem_close(ph->take_forks);
