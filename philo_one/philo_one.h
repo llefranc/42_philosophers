@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:54 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/16 20:25:34 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 08:36:35 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void			ft_putstr_fd(char *s, int fd);
 int				ft_strisdigit(char *str);
 long			ft_atoi(const char *str);
 char			*ft_itoa(long n);
-void			sleep_better(long nb_ms);
+void			better_sleep(long d);
 int				lennb(unsigned int nb);
 int				lennb_for_str(unsigned int nb);
 void			ft_putnbr_buffer(int n, char *str);

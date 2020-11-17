@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 13:01:47 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/16 20:25:20 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/17 08:36:19 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,19 @@ char	*ft_itoa(long n)
 /*
 ** More opti than usleep function.
 */
-void	sleep_better(long nb_ms)
+void	better_sleep(long d)
 {
-	long		time;
+    struct timeval tmp;
+    struct timeval start;
 
-	time = get_time_ms();
-	while (get_time_ms() - time < nb_ms)
-		continue ;
+    gettimeofday(&start, NULL);
+    while (1)
+    {
+        usleep(50);
+        gettimeofday(&tmp, NULL);
+        if ((((long)(tmp.tv_sec - start.tv_sec)) * 1000000 + ((long)(tmp.tv_usec - start.tv_usec))) >= d)
+            return ;
+    }
 }
 
 int		lennb_for_str(unsigned int nb)
