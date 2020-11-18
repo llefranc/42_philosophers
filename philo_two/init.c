@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 11:28:59 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 16:08:30 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 18:00:49 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		init_semaphore(t_philo *ph, t_info *info)
 ** Creates, initiates and returns an array of struct t_philo. Returns NULL if
 ** an error occured.
 */
-t_philo	*create_t_philo_array(t_info *info, int *ph_die)
+t_philo	*create_t_philo_array(t_info *info, int *nb_ph_fed, int *ph_die)
 {
 	t_philo	*ph;
 	int		nb_ph;
@@ -86,6 +86,7 @@ t_philo	*create_t_philo_array(t_info *info, int *ph_die)
 		ph[nb_ph - 1].info = info;
 		ph[nb_ph - 1].time_start = time_start; //all structs have the same time_start
 		ph[nb_ph - 1].ph_die = ph_die;
+		ph[nb_ph - 1].nb_ph_fed = nb_ph_fed;
 		nb_ph--;
 	}
 	return (ph);

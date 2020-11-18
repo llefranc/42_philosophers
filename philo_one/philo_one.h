@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:54 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 13:13:39 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 17:49:23 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-# define SUCCESS 0
-# define FAILURE 1
+# define SUCCESS	0
+# define FAILURE	1
 
-# define EAT 0
-# define FORK 1
-# define THINK 2
-# define SLEEP 3
-# define DIE 4
+# define EAT		0
+# define FORK		1
+# define THINK		2
+# define SLEEP		3
+# define DIE		4
 
 typedef struct 		s_pdata
 {
@@ -51,9 +51,9 @@ typedef struct		s_philo
 	pthread_mutex_t	*mutex;
 	long			time_start;
 	long			time_last_meal;
-	t_pdata			*ph_die;		//boolean sets to 1 when a philo die, and mutex for printing
-	t_pdata			*nb_ph_fed;  //simulation stops if all philos have eat x time argument 5
-}					t_philo;        //correctly between all the threads
+	t_pdata			*ph_die;		//boolean sets to 1 when a philo die, and mutex for printing correctly between all the threads
+	t_pdata			*nb_ph_fed;     //simulation stops if all philos have eat x time argument 5
+}					t_philo;
 
 //utils.c
 

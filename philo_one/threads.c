@@ -3,18 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 11:04:24 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 17:33:23 by user42           ###   ########.fr       */
+/*   Updated: 2020/11/18 18:03:04 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
+/*
+** Checks if the actual thread (philosophe) ate enough. If it's the case,
+** checks if all the philosophers have eaten enough and stops the algorithm if
+** it's the case.
+*/
 void	check_philo_is_fed(t_philo *ph, int *nb_of_time_ph_ate)
 {
-	if (++(*nb_of_time_ph_ate) == ph->info->nb_each_ph_eat) //if no arg 5, nb_each_ph_eat == -1, will never be true
+	if (++(*nb_of_time_ph_ate) == ph->info->nb_each_ph_eat) //if missing arg 5, nb_each_ph_eat == -1, will never be true
 	{
 		pthread_mutex_lock(&(ph->nb_ph_fed->mutex));
 		if (++(ph->nb_ph_fed->data) == ph->info->nb_ph)
@@ -42,17 +47,17 @@ void	philo_eat(t_philo *ph, int *nb_of_time_ph_ate)
 	int		left_f;
 
 	right_f = ph->id - 1;
-	left_f = right_f != 0 ? right_f - 1 : ph->info->nb_ph - 1; //if philo num 0, will take fork 0 and fork n (for n philosphers)
+	left_f = right_f != 0 ? right_f - 1 : ph->info->nb_ph - 1;           //if philo num 0, will take fork 0 and fork n (for n philosphers)
 	if ((ph->id % 2 == 0 && !pthread_mutex_lock(&((ph->mutex)[left_f]))) //even id starts with left, odd id with right
 			|| !pthread_mutex_lock(&((ph->mutex)[right_f])))
 		print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
 	if ((ph->id % 2 == 0 && !pthread_mutex_lock(&((ph->mutex)[right_f])))
 			|| !pthread_mutex_lock(&((ph->mutex)[left_f])))
 		print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
-	ph->time_last_meal = get_time_ms(); //updating time when philosopher starts to eat
-	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, EAT); //eating when he has 2 forks
-	check_philo_is_fed(ph, nb_of_time_ph_ate); //stop the simulation if all philos are fed
-	better_sleep(ph->info->t_to_eat * 1000); //converting ms in microsec
+	ph->time_last_meal = get_time_ms();                                 //updating time when philosopher starts to eat
+	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, EAT);   //eating when he has 2 forks
+	check_philo_is_fed(ph, nb_of_time_ph_ate);                          //stop the simulation if all philos are fed
+	better_sleep(ph->info->t_to_eat * 1000);                            //converting ms in microsec
 	pthread_mutex_unlock(&((ph->mutex)[left_f]));
 	pthread_mutex_unlock(&((ph->mutex)[right_f]));
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, SLEEP); //sleeping after eating

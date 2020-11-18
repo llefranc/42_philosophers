@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:54 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 15:59:41 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 17:58:50 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,18 @@
 # include <errno.h>
 # include <fcntl.h>
 
-# define SUCCESS 0
-# define FAILURE 1
+# define SUCCESS	0
+# define FAILURE	1
 
-# define EAT 0
-# define FORK 1
-# define THINK 2
-# define SLEEP 3
-# define DIE 4
+# define EAT		0
+# define FORK		1
+# define THINK		2
+# define SLEEP		3
+# define DIE		4
 
-# define S_FORKS "semaphore_forks"
-# define S_TAKE "semaphore_take_forks"
-# define S_PRINT "semaphore_print"
+# define S_FORKS	"semaphore_forks"
+# define S_TAKE		"semaphore_take_forks"
+# define S_PRINT	"semaphore_print"
 
 typedef struct		s_info
 {
@@ -54,7 +54,8 @@ typedef struct		s_philo
 	long			time_last_meal;
 	sem_t			*printing;      //one thread at a time can print
 	sem_t			*take_forks;    //one philo at a time can take 2 forks
-	int				*ph_die;         //boolean to exit the threads when a philosophe die
+	int				*ph_die;        //boolean to exit the threads when a philosophe die
+	int				*nb_ph_fed;     //simulation stops if all philos have eat x time argument 5
 }					t_philo;
 
 //utils.c
@@ -81,7 +82,7 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 //init.c
 
 void			init_t_info(t_info *info, int ac, char **av);
-t_philo			*create_t_philo_array(t_info *info, int *ph_die);
+t_philo			*create_t_philo_array(t_info *info, int *nb_ph_fed, int *ph_die);
 pthread_mutex_t	*create_forks(int nb_forks);
 void			launch_threads(t_philo *ph);
 

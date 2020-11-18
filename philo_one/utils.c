@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:08:56 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 13:32:57 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 17:41:29 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int		error_msg(char *str)
 
 /*
 ** Returns SUCCESS if there is 4 or 5 arguments (last one is optional) and if
-** they're all only made of digits.
+** they're all only made of digits, positive and with not too big values for
+** the simulation.
 */
 int		check_arguments(int ac, char **av)
 {
