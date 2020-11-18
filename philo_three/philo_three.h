@@ -23,19 +23,20 @@
 # include <fcntl.h>
 # include <signal.h>
 
-# define SUCCESS 0
-# define FAILURE 1
+# define SUCCESS		0
+# define FAILURE		1
 
-# define EAT 0
-# define FORK 1
-# define THINK 2
-# define SLEEP 3
-# define DIE 4
+# define EAT			0
+# define FORK			1
+# define THINK			2
+# define SLEEP			3
+# define DIE			4
 
-# define S_FORKS "sem_forks"
-# define S_TAKE "sem_take_forks"
-# define S_PRINT "sem_print"
-# define S_PHILO_DIE "sem_philo_die"
+# define S_FORKS		"sem_forks"
+# define S_TAKE			"sem_take_forks"
+# define S_PRINT		"sem_print"
+# define S_PHILO_DIE	"sem_philo_die"
+# define S_NB_PH_FED	"sem_nb_ph_fed"
 
 typedef struct		s_info
 {
@@ -57,6 +58,7 @@ typedef struct		s_philo
 	sem_t			*printing;      //one thread at a time can print
 	sem_t			*take_forks;    //one philo at a time can take 2 forks
 	sem_t			*ph_die;        //main will block until a philo die
+	sem_t			*nb_ph_fed;     //main will also block until all philos are fed 
 }					t_philo;
 
 //utils.c

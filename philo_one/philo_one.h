@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:54 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 18:20:53 by user42           ###   ########.fr       */
+/*   Updated: 2020/11/18 18:23:17 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 //init.c
 
 void			init_t_info(t_info *info, int ac, char **av);
-t_philo			*create_t_philo_array(pthread_mutex_t *mutex, t_pdata *nb_ph_fed, t_pdata *ph_die, t_info *info);
+t_philo			*create_t_philo_array(pthread_mutex_t *mutex, int *nb_ph_fed, t_pdata *ph_die, t_info *info);
 pthread_mutex_t	*create_forks(int nb_forks);
 void			launch_threads(t_philo *ph);
 

@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 11:28:59 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 13:07:51 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 18:23:04 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	init_t_info(t_info *info, int ac, char **av)
 ** Creates, initiates and returns an array of struct t_philo. Returns NULL if
 ** an error occured.
 */
-t_philo	*create_t_philo_array(pthread_mutex_t *mutex, t_pdata *nb_ph_fed, t_pdata *ph_die, t_info *info)
+t_philo	*create_t_philo_array(pthread_mutex_t *mutex, int *nb_ph_fed, t_pdata *ph_die, t_info *info)
 {
 	t_philo	*ph;
 	int		nb_ph;

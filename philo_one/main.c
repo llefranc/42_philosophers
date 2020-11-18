@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:40 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 17:41:37 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 18:22:43 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		main(int ac, char **av)
 {
 	t_philo			*ph;
 	t_pdata			ph_die;
-	t_pdata			nb_ph_fed;
+	int				nb_ph_fed;
 	pthread_mutex_t	*mutex;
 	t_info			info;
 	
@@ -24,8 +24,7 @@ int		main(int ac, char **av)
 		return (FAILURE);
 	pthread_mutex_init(&(ph_die.mutex), NULL);
 	ph_die.data = 0;
-	pthread_mutex_init(&(nb_ph_fed.mutex), NULL);
-	nb_ph_fed.data = 0;
+	nb_ph_fed = 0;
 	init_t_info(&info, ac, av);
 	if (info.nb_ph < 2)
 		return (error_msg("Not enough philosphers, must be at least 2\n"));
