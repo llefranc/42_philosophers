@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 11:04:24 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 18:03:04 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 18:20:44 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,17 @@
 */
 void	check_philo_is_fed(t_philo *ph, int *nb_of_time_ph_ate)
 {
+	pthread_mutex_lock(&(ph->ph_die->mutex));
 	if (++(*nb_of_time_ph_ate) == ph->info->nb_each_ph_eat) //if missing arg 5, nb_each_ph_eat == -1, will never be true
 	{
-		pthread_mutex_lock(&(ph->nb_ph_fed->mutex));
-		if (++(ph->nb_ph_fed->data) == ph->info->nb_ph)
+		if (++(*(ph->nb_ph_fed)) == ph->info->nb_ph)
 		{
-			pthread_mutex_lock(&(ph->ph_die->mutex));
 			if (!(ph->ph_die->data)) //if a philosopher die just right before in another thread we don't print
 				ft_putstr_fd("All philosphers have eaten enough\n", 1);
 			ph->ph_die->data = 1; //will stop the simulation and make all threads exit
-			pthread_mutex_unlock(&(ph->ph_die->mutex));
 		}
-		pthread_mutex_unlock(&(ph->nb_ph_fed->mutex));
 	}
+	pthread_mutex_unlock(&(ph->ph_die->mutex));
 }
 
 /*

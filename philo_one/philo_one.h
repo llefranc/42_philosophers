@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:54 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 17:49:23 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 18:20:53 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct		s_philo
 	long			time_start;
 	long			time_last_meal;
 	t_pdata			*ph_die;		//boolean sets to 1 when a philo die, and mutex for printing correctly between all the threads
-	t_pdata			*nb_ph_fed;     //simulation stops if all philos have eat x time argument 5
+	int				*nb_ph_fed;     //simulation stops if all philos have eat x time argument 5
 }					t_philo;
 
 //utils.c
