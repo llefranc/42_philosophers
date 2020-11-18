@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:08:56 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/16 20:26:37 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 13:32:57 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ int		check_arguments(int ac, char **av)
 	while (i < ac)
 		if (ft_strisdigit(av[i++]))
 			return (error_msg("Wrong arguments\n"));
+	if (ft_atoi(av[1]) > 1000 || ft_strlen(av[1]) > 4) //protecting arguments
+		return (error_msg("Max nb of philosophers : 1000\n"));
+	if (ft_atoi(av[2]) > 1000000 || ft_strlen(av[2]) > 7
+			|| ft_atoi(av[3]) > 1000000 || ft_strlen(av[3]) > 7
+			|| ft_atoi(av[4]) > 1000000 || ft_strlen(av[4]) > 7)
+		return (error_msg("Max time in ms for args 2/3/4 : 1000000ms\n"));
+	if (av[5] && (ft_atoi(av[5]) > 1000000 || ft_strlen(av[5]) > 7))
+		return (error_msg("Max nb of time philo can eat : 1000000"));
+	if (!ft_atoi(av[2]) || !ft_atoi(av[3]) || !ft_atoi(av[4]) || (av[5] && !ft_atoi(av[5])))
+		return (error_msg("Arguments must be positive and > 0\n"));
 	return (SUCCESS);
 }
 

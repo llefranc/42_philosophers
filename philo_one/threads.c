@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 11:04:24 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 13:25:38 by user42           ###   ########.fr       */
+/*   Updated: 2020/11/18 13:29:32 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
+
+void	check_philo_is_fed(t_philo *ph, int *nb_of_time_ph_ate)
+{
+	if (++(*nb_of_time_ph_ate) == ph->info->nb_each_ph_eat) //if no arg 5, nb_each_ph_eat == -1, will never be true
+	{
+		pthread_mutex_lock(&(ph->nb_ph_fed->mutex));
+		if (++(ph->nb_ph_fed->data) == ph->info->nb_ph)
+		{
+			pthread_mutex_lock(&(ph->ph_die->mutex));
+			ph->ph_die->data = 1; //will stop the simulation and make all threads exit
+			ft_putstr_fd("All philosphers have eaten enough\n", 1);
+			pthread_mutex_unlock(&(ph->ph_die->mutex));
+		}
+		pthread_mutex_unlock(&(ph->nb_ph_fed->mutex));
+	}
+}
 
 /*
 ** For philospher number x, locks mutex x and mutex x-1. When the 2 mutexs are
@@ -19,7 +35,7 @@
 ** with left in order so the algo will not be block if all the philosophers
 ** take one fork exactly at the same time.
 */
-void	philo_eat(t_philo *ph)
+void	philo_eat(t_philo *ph, int *nb_of_time_ph_ate)
 {
 	int		right_f;
 	int		left_f;
@@ -34,6 +50,7 @@ void	philo_eat(t_philo *ph)
 		print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
 	ph->time_last_meal = get_time_ms(); //updating time when philosopher starts to eat
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, EAT); //eating when he has 2 forks
+	check_philo_is_fed(ph, nb_of_time_ph_ate); //stop the simulation if all philos are fed
 	better_sleep(ph->info->t_to_eat * 1000); //converting ms in microsec
 	pthread_mutex_unlock(&((ph->mutex)[left_f]));
 	pthread_mutex_unlock(&((ph->mutex)[right_f]));
@@ -65,6 +82,8 @@ void	*check_philo_alive(void *tmp)
 			pthread_mutex_unlock(&(ph->ph_die->mutex));
 			return (NULL);
 		}
+		if (ph->ph_die->data) //if a philo is dead or all philos are fed >> all threads exits
+			return (NULL);
 	}
 }
 
@@ -75,12 +94,14 @@ void	*check_philo_alive(void *tmp)
 void	*philo_life(void *ph)
 {
 	pthread_t	control_die;
+	int			nb_of_time_ph_ate;
 
+	nb_of_time_ph_ate = 0;
 	((t_philo *)ph)->time_last_meal = get_time_ms();
 	pthread_create(&control_die, NULL, &check_philo_alive, ph); //thread to control time_to_die
 	while (1)
 	{
-		philo_eat((t_philo *)ph);
+		philo_eat((t_philo *)ph, &nb_of_time_ph_ate);
 		if (((t_philo *)ph)->ph_die->data) //if a philo is dead, the thread exits
 		{
 			pthread_join(control_die, NULL);

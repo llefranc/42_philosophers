@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:06:40 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 19:53:57 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/18 12:52:14 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ int		main(int ac, char **av)
 	init_t_info(&info, ac, av);
 	if (info.nb_ph < 2)
 		return (error_msg("Not enough philosphers, must be at least 2\n"));
-	create_t_philo_array(&ph, &info); // > ok
-	launch_processes(&ph); //> j'en suis dans philo life
-	// join_all_threads(ph); //waiting all threads
-	clean_exit(ph); //a modifier
+	create_t_philo_array(&ph, &info);
+	launch_processes(&ph);
+	clean_exit(ph);
 	return (0);
 }

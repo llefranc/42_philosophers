@@ -36,6 +36,7 @@
 # define S_TAKE "sem_take_forks"
 # define S_PRINT "sem_print"
 # define S_PHILO_DIE "sem_philo_die"
+
 typedef struct		s_info
 {
 	int				nb_ph;

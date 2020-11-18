@@ -6,13 +6,13 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/13 21:36:01 by lucaslefran       #+#    #+#              #
-#    Updated: 2020/11/18 17:14:42 by user42           ###   ########.fr        #
+#    Updated: 2020/11/18 17:15:52 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	philo_one
 CC			=	gcc
-FLAGS		=	-Wall -Wextra -Werror
+FLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
 
 SRCS		=	main.c utils.c init.c libft.c threads.c
 OBJS		=	$(SRCS:.c=.o)

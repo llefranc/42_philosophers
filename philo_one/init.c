@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 11:28:59 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/17 13:18:28 by user42           ###   ########.fr       */
+/*   Updated: 2020/11/18 13:07:51 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	init_t_info(t_info *info, int ac, char **av)
 ** Creates, initiates and returns an array of struct t_philo. Returns NULL if
 ** an error occured.
 */
-t_philo	*create_t_philo_array(pthread_mutex_t *mutex, t_pdata *ph_die, t_info *info)
+t_philo	*create_t_philo_array(pthread_mutex_t *mutex, t_pdata *nb_ph_fed, t_pdata *ph_die, t_info *info)
 {
 	t_philo	*ph;
 	int		nb_ph;
@@ -72,9 +72,10 @@ t_philo	*create_t_philo_array(pthread_mutex_t *mutex, t_pdata *ph_die, t_info *i
 	{
 		ph[nb_ph - 1].id = nb_ph;
 		ph[nb_ph - 1].mutex = mutex;
-		ph[nb_ph - 1].ph_die = ph_die;
 		ph[nb_ph - 1].info = info;
 		ph[nb_ph - 1].time_start = time_start; //all structs have the same time_start
+		ph[nb_ph - 1].ph_die = ph_die;
+		ph[nb_ph - 1].nb_ph_fed = nb_ph_fed;
 		nb_ph--;
 	}
 	return (ph);
