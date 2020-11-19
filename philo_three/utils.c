@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:08:56 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 13:32:43 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/19 11:18:52 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		check_arguments(int ac, char **av)
 			|| ft_atoi(av[4]) > 1000000 || ft_strlen(av[4]) > 7)
 		return (error_msg("Max time in ms for args 2/3/4 : 1000000ms\n"));
 	if (av[5] && (ft_atoi(av[5]) > 1000000 || ft_strlen(av[5]) > 7))
-		return (error_msg("Max nb of time philo can eat : 1000000"));
+		return (error_msg("Max nb of time philo can eat : 1000000\n"));
 	if (!ft_atoi(av[2]) || !ft_atoi(av[3]) || !ft_atoi(av[4]) || (av[5] && !ft_atoi(av[5])))
 		return (error_msg("Arguments must be positive and > 0\n"));
 	return (SUCCESS);
