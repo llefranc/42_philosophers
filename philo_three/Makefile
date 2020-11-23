@@ -6,13 +6,13 @@
 #    By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/13 21:36:01 by lucaslefran       #+#    #+#              #
-#    Updated: 2020/11/18 18:42:04 by lucaslefran      ###   ########.fr        #
+#    Updated: 2020/11/23 13:22:50 by lucaslefran      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	philo_three
 CC			=	gcc
-FLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
+FLAGS		=	-Wall -Wextra -Werror
 
 SRCS		=	main.c utils.c init.c libft.c processes.c
 OBJS		=	$(SRCS:.c=.o)

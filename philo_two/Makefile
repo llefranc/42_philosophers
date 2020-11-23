@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
+#    By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/13 21:36:01 by lucaslefran       #+#    #+#              #
-#    Updated: 2020/11/17 13:02:57 by user42           ###   ########.fr        #
+#    Updated: 2020/11/23 13:22:55 by lucaslefran      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	philo_two
 CC			=	gcc
-FLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
+FLAGS		=	-Wall -Wextra -Werror
 
 SRCS		=	main.c utils.c init.c libft.c threads.c
 OBJS		=	$(SRCS:.c=.o)

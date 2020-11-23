@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:08:56 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/19 11:19:13 by user42           ###   ########.fr       */
+/*   Updated: 2020/11/23 13:20:08 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,18 @@ int		print_ms_and_state(int id, int ms, char *str_msg)
 {
 	int		len_id;
 	int		len_ms;
-	char	*tmp;
+	char	tmp[100];
 
+	len_id = -1;
+	while (++len_id <= 99)
+		tmp[len_id] = '\0';
 	len_id = lennb_for_str(id);
 	len_ms = lennb_for_str(ms);
-	if (!(tmp = malloc(len_id + len_ms + ft_strlen(str_msg) + 3 + 1))) //+3 for "ms "
-		return (error_msg("Malloc failed\n"));
-	tmp[len_id + len_ms + ft_strlen(str_msg) + 3] = '\0';
 	ft_putnbr_buffer(ms, tmp);
 	ft_strlcpy(tmp + len_ms, "ms ", 4);
 	ft_putnbr_buffer(id, tmp + len_ms + 3);
 	ft_strlcpy(tmp + len_id + len_ms + 3, str_msg, ft_strlen(str_msg) + 1);
 	ft_putstr_fd(tmp, 1);
-	free(tmp);
 	return (SUCCESS);
 }
 
@@ -78,9 +77,9 @@ int		print_state_msg(t_philo *ph, int id_philo, suseconds_t ms, int type)
 	pthread_mutex_lock(&(ph->ph_die->mutex));	//only one thread at a time can print
 	if (!ph->ph_die->data && type == EAT)
 		print_ms_and_state(id_philo, ms, " is eating\n");
-	else if (!ph->ph_die->data && type == FORK)                   //if ph_die->data is set to 1, a philo
+	else if (!ph->ph_die->data && type == FORK)                       //if ph_die->data is set to 1, a philo
 		print_ms_and_state(id_philo, ms, " has taken a fork\n");  //is dead : we don't print any messages
-	else if (!ph->ph_die->data && type == SLEEP)                  //until program exit
+	else if (!ph->ph_die->data && type == SLEEP)                      //until program exit
 		print_ms_and_state(id_philo, ms, " is sleeping\n");
 	else if (!ph->ph_die->data && type == THINK)
 		print_ms_and_state(id_philo, ms, " is thinking\n");

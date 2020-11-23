@@ -6,7 +6,7 @@
 /*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 11:04:24 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 18:23:44 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2020/11/23 12:49:01 by lucaslefran      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	philo_eat(t_philo *ph, int *nb_of_time_ph_ate)
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, SLEEP); //sleeping after eating
 	better_sleep(ph->info->t_to_sleep * 1000);
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, THINK); //thinking after eating
+	usleep(100);                                                        //for avoiding a philo to eat twice in a row
 }
 
 /*
