@@ -3,15 +3,19 @@
 
 I’ve never thought philosophy would be so deadly.
 
+
 ## About
 
 Philosophers is the 7th project of mandatory part of the cursus.
 It's only made in C and the main goal was to understand how threads works in language C and use them to solve a logical problem.
 The simulation will stop if all philosopher have eaten enough or if one philosopher die.
-`There was three different version of the algorithm :
-    - Philo_one is about using threads and mutexs
-    - Philo_two is about using threads and semaphores
-    - Philo_three is about using processes and semaphores`
+
+
+        There was three different version of the algorithm :
+        - Philo_one is about using threads and mutexs
+        - Philo_two is about using threads and semaphores
+        - Philo_three is about using processes and semaphores
+
 - Here is the [subject][1]
 
 ### Building and running the program
