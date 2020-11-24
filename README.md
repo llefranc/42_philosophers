@@ -44,7 +44,7 @@ The simulation will stop if all philosophers have eaten enough or if one philoso
 - [Comprendre les sémaphores (FR)][6]
 - [How to use sempahores on fork processes][7]
 
-[1]: https://https://github.com/lucaslefrancq/42-07_philosophers/master/philosophers.en.subject.pdf
+[1]: https://github.com/lucaslefrancq/42-07_philosophers/blob/main/philosophers.en.subject.pdf
 [2]: https://zestedesavoir.com/tutoriels/607/les-systemes-dexploitation/processus-et-threads/
 [3]: https://cours.polymtl.ca/inf2610/documentation/notes/chap4.pdf
 [4]: https://www.notion.so/philosophers-VM-c60be9c836084edfbcd9c07e29b429c4
