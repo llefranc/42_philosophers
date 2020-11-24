@@ -1,8 +1,6 @@
 # Philosophers (@42Paris)
-`This project was code on MACOS`
 
 I’ve never thought philosophy would be so deadly.
-
 
 ## About
 
@@ -17,6 +15,8 @@ The simulation will stop if all philosophers have eaten enough or if one philoso
         - Philo_three is about using processes and semaphores
 
 - Here is the [subject][1]
+
+`This project was code on MACOS`
 
 ### Building and running the program
 
