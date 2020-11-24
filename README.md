@@ -8,7 +8,7 @@ I’ve never thought philosophy would be so deadly.
 
 Philosophers is the 7th project of mandatory part of the cursus.
 It's only made in C and the main goal was to understand how threads works in language C and use them to solve a logical problem.
-The simulation will stop if all philosopher have eaten enough or if one philosopher die.
+The simulation will stop if all philosophers have eaten enough or if one philosopher die.
 
 
         There was three different version of the algorithm :
@@ -44,7 +44,7 @@ The simulation will stop if all philosopher have eaten enough or if one philosop
 - [Comprendre les sémaphores (FR)][6]
 - [How to use sempahores on fork processes][7]
 
-[1]: https://github.com/R4meau/minishell/blob/master/minishell.en.pdf
+[1]: https://https://github.com/lucaslefrancq/42-07_philosophers/master/philosophers.en.subject.pdf
 [2]: https://zestedesavoir.com/tutoriels/607/les-systemes-dexploitation/processus-et-threads/
 [3]: https://cours.polymtl.ca/inf2610/documentation/notes/chap4.pdf
 [4]: https://www.notion.so/philosophers-VM-c60be9c836084edfbcd9c07e29b429c4
