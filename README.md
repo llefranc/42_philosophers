@@ -19,7 +19,7 @@ The simulation will stop if all philosophers have eaten enough or if one philoso
 
 `This project was code for MACOS`
 
-### Building and running the program
+### Building and running the project
 
 1. Download/Clone this repo
 
