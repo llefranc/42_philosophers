@@ -2,6 +2,8 @@
 
 I’ve never thought philosophy would be so deadly.
 
+![Alt text](https://github.com/lucaslefrancq/42-07_philosophers/blob/main/philo_example.png)
+
 ## About
 
 Philosophers is the 7th project of the mandatory part of the cursus.
