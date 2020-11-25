@@ -1,8 +1,8 @@
-# Philosophers (@42Paris)
+# philosophers (@42Paris)
 
-I’ve never thought philosophy would be so deadly.
+"I’ve never thought philosophy would be so deadly"
 
-![Alt text](https://github.com/lucaslefrancq/42-07_philosophers/blob/main/philo_example.png)
+![Alt text](https://github.com/lucaslefrancq/42_philosophers/blob/main/philo_example.png)
 
 ## About
 
@@ -23,10 +23,10 @@ The simulation will stop if all philosophers have eaten enough or if one philoso
 
 1. Download/Clone this repo
 
-        git clone https://github.com/lucaslefrancq/42-07_philosophers
-2. `cd` into the root directory, then cd into philo_x (one, two or three) and run `make`
+        git clone https://github.com/lucaslefrancq/42_philosophers.git
+2. `cd` into the root directory, then `cd` into philo_x (one, two or three) and run `make`
 
-        cd 42-07_philosophers/philo_one
+        cd 42_philosophers/philo_one
         make
 
 3.  run `./philo_x arg1 arg2 arg3 arg4 (arg5)` from the directory philo_x.
@@ -45,7 +45,7 @@ The simulation will stop if all philosophers have eaten enough or if one philoso
 - [Comprendre les sémaphores (FR)][6]
 - [How to use sempahores on fork processes][7]
 
-[1]: https://github.com/lucaslefrancq/42-07_philosophers/blob/main/philosophers.en.subject.pdf
+[1]: https://github.com/lucaslefrancq/42_philosophers/blob/main/philosophers.en.subject.pdf
 [2]: https://zestedesavoir.com/tutoriels/607/les-systemes-dexploitation/processus-et-threads/
 [3]: https://cours.polymtl.ca/inf2610/documentation/notes/chap4.pdf
 [4]: https://www.notion.so/philosophers-VM-c60be9c836084edfbcd9c07e29b429c4
