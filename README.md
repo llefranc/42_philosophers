@@ -6,7 +6,7 @@
 
 ## About
 
-Philosophers is the 7th project of the mandatory part of the cursus.
+Philosophers is a project of the mandatory part of the cursus.
 It's only made in C and the main goal was to understand how threads works in language C and use them to solve a logical problem.
 The simulation will stop if all philosophers have eaten enough or if one philosopher die.
 
