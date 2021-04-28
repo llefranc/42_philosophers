@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 11:04:24 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 19:24:33 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2021/04/28 14:49:43 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,18 @@ void	check_philo_is_fed(t_philo *ph, int *nb_of_time_ph_ate)
 */
 void	philo_eat(t_philo *ph, int *nb_of_time_ph_ate)
 {
-	sem_wait(ph->nb_forks);                                              //philosopher take 2 forks at the same time
+	sem_wait(ph->take_forks);                                            //philosopher take 2 forks at the same time
+	sem_wait(ph->nb_forks);                                              //taking 2 forks
+	sem_wait(ph->nb_forks);                                              
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
 	ph->time_last_meal = get_time_ms();                                  //updating time when philosopher starts to eat
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, EAT);    //eating when he has 2 forks
+	sem_post(ph->take_forks);                                            //another philosopher can pick forks
 	check_philo_is_fed(ph, nb_of_time_ph_ate);
 	better_sleep(ph->info->t_to_eat * 1000);                             //converting ms in microsec
 	sem_post(ph->nb_forks);                                              //finished to eat, put back his two forks
+	sem_post(ph->nb_forks);
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, SLEEP);  //sleeping after eating
 	better_sleep(ph->info->t_to_sleep * 1000);
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, THINK);  //thinking after eating

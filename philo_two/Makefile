@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+         #
+#    By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/13 21:36:01 by lucaslefran       #+#    #+#              #
-#    Updated: 2020/11/23 13:22:55 by lucaslefran      ###   ########.fr        #
+#    Updated: 2021/04/28 14:22:18 by llefranc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

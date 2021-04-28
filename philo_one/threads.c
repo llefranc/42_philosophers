@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 11:04:24 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/23 12:49:01 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2021/04/28 14:46:13 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,16 @@ void	*check_philo_alive(void *tmp)
 	while (1)
 	{
 		time_death = get_time_ms();
+		pthread_mutex_lock(&(ph->ph_die->mutex)); //only one thread prints at a time
 		if ((time_death - ph->time_last_meal) > ph->info->t_to_die)
 		{
-			pthread_mutex_lock(&(ph->ph_die->mutex)); //only one thread prints at a time
 			if (!ph->ph_die->data) //doesn't print msg if another philo is already dead
 				print_ms_and_state(ph->id, time_death - ph->time_start, " has died\n");
 			ph->ph_die->data = 1; //sets death boolean to 1, no other messages from other philo will be print
 			pthread_mutex_unlock(&(ph->ph_die->mutex));
 			return (NULL);
 		}
+		pthread_mutex_unlock(&(ph->ph_die->mutex));
 		if (ph->ph_die->data) //if a philo is dead or all philos are fed >> all threads exits
 			return (NULL);
 	}

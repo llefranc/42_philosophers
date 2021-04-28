@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 11:28:59 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 19:23:31 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2021/04/28 14:49:57 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int		create_t_philo_array(t_philo *ph, t_info *info)
 	sem_unlink(S_TAKE);
 	sem_unlink(S_PHILO_DIE);
 	sem_unlink(S_NB_PH_FED);
-	ph->nb_forks = sem_open(S_FORKS, O_CREAT, 0644, info->nb_ph / 2); //divided by 2 because algo works with pairs of forks
+	ph->nb_forks = sem_open(S_FORKS, O_CREAT, 0644, info->nb_ph); //represents nb of forks
 	ph->printing = sem_open(S_PRINT, O_CREAT, 0644, 1);
 	ph->take_forks = sem_open(S_TAKE, O_CREAT, 0644, 1);
 	ph->ph_die = sem_open(S_PHILO_DIE, O_CREAT, 0644, 0); //unblock main process when a philosophe die

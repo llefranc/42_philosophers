@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 11:04:24 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 18:50:15 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2021/04/28 14:47:56 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,18 @@ void	check_philo_is_fed(t_philo *ph, int *nb_of_time_ph_ate)
 */
 void	philo_eat(t_philo *ph, int *nb_of_time_ph_ate)
 {
-	sem_wait(ph->nb_forks);                                              //philosopher take 2 forks at the same time
+	sem_wait(ph->take_forks);                                            //philosopher take 2 forks at the same time
+	sem_wait(ph->nb_forks);                                              // taking 2 forks
+	sem_wait(ph->nb_forks);
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, FORK);
 	ph->time_last_meal = get_time_ms();                                  //updating time when philosopher starts to eat
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, EAT);    //eating when he has 2 forks
+	sem_post(ph->take_forks);                                            //another philosopher can pick forks
 	check_philo_is_fed(ph, nb_of_time_ph_ate);
 	better_sleep(ph->info->t_to_eat * 1000);                             //converting ms in microsec
-	sem_post(ph->nb_forks);                                              //finished to eat, put back his two forks
+	sem_post(ph->nb_forks);                                              //finished to eat, put back his two forks                                            
+	sem_post(ph->nb_forks);
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, SLEEP);  //sleeping after eating
 	better_sleep(ph->info->t_to_sleep * 1000);
 	print_state_msg(ph, ph->id, get_time_ms() - ph->time_start, THINK);  //thinking after eating
@@ -65,15 +69,16 @@ void	*check_philo_alive(void *tmp)
 	while (1)
 	{
 		time_death = get_time_ms();
+		sem_wait(ph->printing); //only one thread prints at a time
 		if ((time_death - ph->time_last_meal) > ph->info->t_to_die)
 		{
-			sem_wait(ph->printing); //only one thread prints at a time
 			if (!(*(ph->ph_die)))   //doesn't print msg if another philo is already dead
 				print_ms_and_state(ph->id, time_death - ph->time_start, " has died\n");
 			*(ph->ph_die) = 1;
 			sem_post(ph->printing);
 			return (NULL);
 		}
+		sem_post(ph->printing);
 		if (*(ph->ph_die))          //if a philo is dead, the thread exits
 			return (NULL);
 	}

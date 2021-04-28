@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucaslefrancq <lucaslefrancq@student.42    +#+  +:+       +#+        */
+/*   By: llefranc <llefranc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 11:28:59 by lucaslefran       #+#    #+#             */
-/*   Updated: 2020/11/18 18:00:49 by lucaslefran      ###   ########.fr       */
+/*   Updated: 2021/04/28 14:41:01 by llefranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		init_semaphore(t_philo *ph, t_info *info)
 	sem_unlink(S_FORKS);
 	sem_unlink(S_PRINT);
 	sem_unlink(S_TAKE);
-	nb_forks = sem_open(S_FORKS, O_CREAT, 0644, nb_ph / 2); //divided by 2 because algo works with pairs of forks
+	nb_forks = sem_open(S_FORKS, O_CREAT, 0644, nb_ph); //represents nb of forks
 	printing = sem_open(S_PRINT, O_CREAT, 0644, 1);
 	take_forks = sem_open(S_TAKE, O_CREAT, 0644, 1);
 	while (--nb_ph >= 0)
