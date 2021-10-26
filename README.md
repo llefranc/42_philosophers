@@ -23,7 +23,7 @@ The simulation will stop if all philosophers have eaten enough or if one philoso
 
 1. Download/Clone this repo
 
-        git clone https://github.com/lucaslefrancq/42_philosophers.git
+        git clone https://github.com/llefranc/42_philosophers.git
 2. `cd` into the root directory, then `cd` into philo_x (one, two or three) and run `make`
 
         cd 42_philosophers/philo_one
